@@ -427,9 +427,9 @@ Return.portfolio.geometric <- function(R,
     out = list()
     out$returns = ret
     out$contribution = xts(period_contrib, R.idx)
-    out$BOP.Weight = xts(bop_weights, R.idx)
+    out$BOP.Weight = xts(bop_weights, c(index(weights)[1], R.idx[-length(R.idx)]))
     out$EOP.Weight = xts(eop_weights, R.idx)
-    out$BOP.Value = xts(bop_value, R.idx)
+    out$BOP.Value = xts(bop_value, c(index(weights)[1], R.idx[-length(R.idx)]))
     out$EOP.Value = xts(eop_value, R.idx)
     if(wealth.index){
       out$wealthindex = result
