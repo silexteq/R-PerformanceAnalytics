@@ -56,7 +56,7 @@ function (R, Rf = 0)
     # A timeseries of the calculated series
 
     # FUNCTION:
-
+    
     # Transform input data to a timeseries (xts) object
     R = checkData(R)
 
@@ -69,9 +69,6 @@ function (R, Rf = 0)
           colnames(Rf) = "Rf"
           coln.Rf = colnames(Rf)
         }
-        Rft=cbind(R,Rf)
-        Rft=na.locf(Rft[,make.names(coln.Rf)])
-        Rf=Rft[which(index(R) %in% index(Rft))]
     }
     else {
         coln.Rf='Rf'
@@ -81,7 +78,8 @@ function (R, Rf = 0)
     ## prototype
     ## xts(apply(managers[,1:6],2,FUN=function(R,Rf,order.by) {xts(R,order.by=order.by)-Rf}, Rf=xts(managers[,10,drop=F]),order.by=index(managers)),order.by=index(managers))
  
-    result = do.call(merge, lapply(1:NCOL(R), function(nc) R[,nc] - coredata(Rf))) # thanks Jeff!
+    result = R - xts::merge.xts(Rf, zoo::index(R)) %>%
+      na.omit()
     
     #if (!is.matrix(result)) result = matrix(result, ncol=ncol(R))
     if(!is.null(dim(result))) colnames(result) = paste(colnames(R), ">", coln.Rf)
