@@ -78,8 +78,7 @@ function (R, Rf = 0)
     ## prototype
     ## xts(apply(managers[,1:6],2,FUN=function(R,Rf,order.by) {xts(R,order.by=order.by)-Rf}, Rf=xts(managers[,10,drop=F]),order.by=index(managers)),order.by=index(managers))
  
-    result = R - xts::merge.xts(Rf, zoo::index(R)) %>%
-      na.omit()
+    result = na.omit(R - xts::merge.xts(Rf, zoo::index(R)))
     
     #if (!is.matrix(result)) result = matrix(result, ncol=ncol(R))
     if(!is.null(dim(result))) colnames(result) = paste(colnames(R), ">", coln.Rf)
